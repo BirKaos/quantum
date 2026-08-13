@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Film Platformu</title>
+    <title>🎬 Spider-Man: No Way Home</title>
     <style>
         * {
             margin: 0;
@@ -21,86 +21,13 @@
             padding: 20px;
             transition: background 0.4s ease;
         }
-        /* GİRİŞ EKRANI */
-        .auth-container {
-            background: #151e2a;
-            padding: 40px 32px;
-            border-radius: 32px;
-            max-width: 400px;
-            width: 100%;
-            border: 1px solid #2b3a4e;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
-            display: none;
-            flex-direction: column;
-            gap: 18px;
-        }
-        .auth-container.active {
-            display: flex;
-        }
-        .auth-container h2 {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #7a9eff, #b47aff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .auth-container input {
-            padding: 14px 18px;
-            border-radius: 40px;
-            border: 1px solid #2e405a;
-            background: #0c121c;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-        }
-        .auth-container input:focus {
-            border-color: #5a7cff;
-            box-shadow: 0 0 0 3px rgba(90, 124, 255, 0.2);
-        }
-        .auth-container button {
-            padding: 14px;
-            border: none;
-            border-radius: 40px;
-            background: #5a7cff;
-            color: white;
-            font-weight: 700;
-            font-size: 17px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .auth-container button:hover {
-            background: #3b5fd9;
-            transform: scale(1.02);
-        }
-        .auth-container .switch-btn {
-            background: transparent;
-            color: #8aa4ff;
-            font-weight: 400;
-            border: 1px solid #2e405a;
-            padding: 10px;
-        }
-        .auth-container .switch-btn:hover {
-            background: #1f2b3b;
-            transform: none;
-        }
-        .auth-error {
-            color: #ff6b7a;
-            font-size: 14px;
-            text-align: center;
-            min-height: 20px;
-        }
-
-        /* ANA UYGULAMA */
+        /* ANA UYGULAMA - HER ZAMAN GÖRÜNÜR */
         .app-container {
             max-width: 1100px;
             width: 100%;
-            display: none;
+            display: flex;
             flex-direction: column;
             gap: 24px;
-        }
-        .app-container.active {
-            display: flex;
         }
 
         /* ÜST NAV */
@@ -167,21 +94,6 @@
         .nav-right .profile-btn span {
             font-weight: 500;
             font-size: 14px;
-        }
-        .logout-btn {
-            background: transparent;
-            border: 1px solid #4c6080;
-            color: #b0c4e8;
-            padding: 8px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 13px;
-        }
-        .logout-btn:hover {
-            background: #ff4d6d;
-            border-color: #ff4d6d;
-            color: white;
         }
 
         /* FİLM İÇERİĞİ */
@@ -352,7 +264,7 @@
             color: #d4bfff;
         }
 
-        /* PROFİL SAYFASI (Modal tarzı) */
+        /* PROFİL SAYFASI (Modal) */
         .profile-modal {
             display: none;
             position: fixed;
@@ -509,18 +421,7 @@
 </head>
 <body>
 
-    <!-- ============= GİRİŞ EKRANI ============= -->
-    <div class="auth-container active" id="authContainer">
-        <h2>🎬 Film Platformu</h2>
-        <p style="color:#8899bb; margin-top: -8px;">Giriş yap veya kaydol</p>
-        <input type="text" id="authUsername" placeholder="Kullanıcı adı">
-        <input type="password" id="authPassword" placeholder="Şifre">
-        <div class="auth-error" id="authError"></div>
-        <button id="authMainBtn">Giriş Yap</button>
-        <button class="switch-btn" id="authSwitchBtn">Hesabın yok mu? Kaydol</button>
-    </div>
-
-    <!-- ============= ANA UYGULAMA ============= -->
+    <!-- ============= ANA UYGULAMA (Kayıt yok, direkt açılır) ============= -->
     <div class="app-container" id="appContainer">
 
         <!-- NAVBAR -->
@@ -535,9 +436,8 @@
             <div class="nav-right">
                 <div class="profile-btn" id="profileOpenBtn">
                     <img id="navAvatar" src="" alt="avatar">
-                    <span id="navUsername">Profil</span>
+                    <span id="navUsername">Profilim</span>
                 </div>
-                <button class="logout-btn" id="logoutBtn">Çıkış</button>
             </div>
         </nav>
 
@@ -565,9 +465,8 @@
                 <button>⭐ Alternatifler (7)</button>
             </div>
 
-            <!-- VIDEO -->
+            <!-- VİDEO (Pixeldrain linki) -->
             <div class="video-wrapper">
-                <!-- VERDİĞİN PİXELDRAIN LİNKİ (embed) -->
                 <iframe src="https://pixeldrain.com/u/3ZWiGJKn?embed&style=hacker" allowfullscreen loading="lazy"></iframe>
             </div>
 
@@ -586,11 +485,11 @@
         </div>
     </div>
 
-    <!-- ============= PROFİL MODAL ============= -->
+    <!-- ============= PROFİL MODAL (Kayıt yok, sadece görsel özelleştirme) ============= -->
     <div class="profile-modal" id="profileModal">
         <div class="profile-card">
             <div class="profile-cover" id="profileCover">
-                <label class="upload-cover" for="coverUpload">📷 Kapak Değiştir</label>
+                <label class="upload-cover" for="coverUpload">📷 Kapak Değiştir (GIF/PNG)</label>
                 <input type="file" id="coverUpload" accept="image/gif,image/png,image/jpeg">
             </div>
 
@@ -602,7 +501,7 @@
             </div>
 
             <div class="profile-info">
-                <input type="text" id="profileUsernameInput" placeholder="Kullanıcı adı">
+                <input type="text" id="profileUsernameInput" placeholder="Kullanıcı adınız (görünen isim)">
                 <button class="save-profile-btn" id="saveProfileBtn">💾 Profili Kaydet</button>
                 <button class="close-profile-btn" id="profileCloseBtn">✖ Kapat</button>
             </div>
@@ -611,33 +510,100 @@
 
     <script>
         // ============================================================
-        // 1. AUTH (localStorage)
+        // 1. PROFİL YÖNETİMİ (localStorage - Kayıt yok, herkes kendi profili)
         // ============================================================
-        const authContainer = document.getElementById('authContainer');
-        const appContainer = document.getElementById('appContainer');
-        const authUsername = document.getElementById('authUsername');
-        const authPassword = document.getElementById('authPassword');
-        const authError = document.getElementById('authError');
-        const authMainBtn = document.getElementById('authMainBtn');
-        const authSwitchBtn = document.getElementById('authSwitchBtn');
-        let isLoginMode = true;
-
-        function getUsers() {
-            return JSON.parse(localStorage.getItem('film_users')) || {};
+        function loadProfile() {
+            const defaultProfile = {
+                username: 'Sinemasever',
+                avatar: '',
+                cover: ''
+            };
+            const stored = localStorage.getItem('film_profil');
+            if (stored) {
+                try { return JSON.parse(stored); } catch (e) { return defaultProfile; }
+            }
+            return defaultProfile;
         }
 
-        function saveUsers(users) {
-            localStorage.setItem('film_users', JSON.stringify(users));
+        function saveProfile(data) {
+            localStorage.setItem('film_profil', JSON.stringify(data));
         }
 
-        function getCurrentUser() {
-            const data = JSON.parse(localStorage.getItem('film_current_user'));
-            return data ? data : null;
+        // ============================================================
+        // 2. EKRANI GÜNCELLE
+        // ============================================================
+        function updateUI(profile) {
+            // Navbar
+            document.getElementById('navUsername').textContent = profile.username || 'Profilim';
+            const navAvatar = document.getElementById('navAvatar');
+            if (profile.avatar && profile.avatar.startsWith('data:')) {
+                navAvatar.src = profile.avatar;
+            } else {
+                navAvatar.src = ''; // boşsa varsayılan css
+            }
+
+            // Profil modalı
+            document.getElementById('profileUsernameInput').value = profile.username || '';
+            const avatarEl = document.getElementById('profileAvatar');
+            if (profile.avatar && profile.avatar.startsWith('data:')) {
+                avatarEl.style.backgroundImage = `url(${profile.avatar})`;
+            } else {
+                avatarEl.style.backgroundImage = '';
+            }
+            const coverEl = document.getElementById('profileCover');
+            if (profile.cover && profile.cover.startsWith('data:')) {
+                coverEl.style.backgroundImage = `url(${profile.cover})`;
+            } else {
+                coverEl.style.backgroundImage = '';
+            }
         }
 
-        function setCurrentUser(username, profileData) {
-            localStorage.setItem('film_current_user', JSON.stringify({ username, ...profileData }));
-        }
+        // ============================================================
+        // 3. BAŞLANGIÇ
+        // ============================================================
+        let currentProfile = loadProfile();
+        updateUI(currentProfile);
 
-        function clearCurrentUser() {
-        
+        // ============================================================
+        // 4. PROFİL MODAL AÇ/KAPA
+        // ============================================================
+        const profileModal = document.getElementById('profileModal');
+        document.getElementById('profileOpenBtn').addEventListener('click', () => {
+            // En son kayıtlı veriyi getir
+            currentProfile = loadProfile();
+            updateUI(currentProfile);
+            profileModal.classList.add('active');
+        });
+        document.getElementById('profileCloseBtn').addEventListener('click', () => {
+            profileModal.classList.remove('active');
+        });
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) profileModal.classList.remove('active');
+        });
+
+        // ============================================================
+        // 5. AVATAR VE KAPAK YÜKLEME (GIF desteği)
+        // ============================================================
+        // Avatar
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const dataUrl = ev.target.result;
+                document.getElementById('profileAvatar').style.backgroundImage = `url(${dataUrl})`;
+                currentProfile.avatar = dataUrl; // geçici olarak ata, kaydedince kalıcı olur
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Kapak
+        document.getElementById('coverUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const dataUrl = ev.target.result;
+                document.getElementById('profileCover').style.backgroundImage = `url(${dataUrl})`;
+                currentProfile.cover = dataUrl;
+ 
