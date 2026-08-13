@@ -3,166 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film Dünyası</title>
-    <!-- Supabase Kütüphanesi -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>🎬 Film İzleme Merkezi</title>
     <style>
-        body { background: #141414; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-        .btn { background: #e50914; color: #fff; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn:hover { background: #b20710; }
-        input { padding: 8px; border-radius: 5px; border: none; background: #333; color: #fff; }
-        
-        /* Film Listesi Izgarası */
-        .movies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .movie-card { background: #1f1f1f; border-radius: 5px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
-        .movie-card:hover { transform: scale(1.05); }
-        .movie-card img { width: 100%; height: 220px; object-fit: cover; }
-        .movie-title { padding: 10px; font-size: 14px; text-align: center; }
-
-        /* Modaller (Pencereler) */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
-        .modal-content { background: #1f1f1f; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
-        .close { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; }
-        
-        .banner-preview { width: 100%; height: 120px; background-size: cover; background-position: center; border-radius: 5px; margin: 10px 0; background-color: #333; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0b0e14;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #1a1f2b;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid #2e3848;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h1 small {
+            font-size: 14px;
+            font-weight: normal;
+            color: #8896b0;
+            margin-left: auto;
+        }
+        .admin-panel {
+            background: #13181f;
+            padding: 18px 20px;
+            border-radius: 16px;
+            margin: 20px 0 25px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #2c3648;
+        }
+        .admin-panel h3 {
+            font-size: 15px;
+            color: #a0b3d9;
+            margin-right: 8px;
+            font-weight: 400;
+        }
+        .admin-panel input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border-radius: 40px;
+            border: 1px solid #384458;
+            background: #0b0e14;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .admin-panel input:focus {
+            border-color: #5a7cff;
+            box-shadow: 0 0 0 3px rgba(90, 124, 255, 0.2);
+        }
+        .admin-panel button {
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: none;
+            background: #5a7cff;
+            color: #fff;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .admin-panel button:hover {
+            background: #3b5fd9;
+            transform: scale(1.02);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #000;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .info-text {
+            margin-top: 18px;
+            font-size: 14px;
+            color: #6a7b99;
+            text-align: center;
+            border-top: 1px solid #242d3d;
+            padding-top: 18px;
+        }
+        .info-text span {
+            color: #8aa4ff;
+            font-weight: 500;
+        }
+        .status {
+            font-size: 13px;
+            color: #7ae0a0;
+            margin-left: 10px;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            .admin-panel { flex-direction: column; align-items: stretch; }
+            .admin-panel button { width: 100%; }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>
+            🎬 Film İzle
+            <small>Doctor Strange 2026</small>
+        </h1>
 
-    <header>
-        <h2>🎬 Film Dünyası</h2>
-        <div>
-            <input type="text" id="aramaInput" placeholder="Film ara...">
-            <button class="btn" onclick="filmAra()">Ara</button>
-            <button class="btn" id="girisBtn" onclick="modalAc('authModal')">Giriş / Profil</button>
+        <!-- YÖNETİM PANELİ (Link koyma yeri) -->
+        <div class="admin-panel">
+            <h3>🔗 Linki değiştir:</h3>
+            <input type="text" id="videoInput" placeholder="Buraya embed linkini yapıştır...">
+            <button onclick="updateVideo()">✅ Güncelle & İzle</button>
+            <span id="statusMsg" class="status"></span>
         </div>
-    </header>
 
-    <!-- FİLM LİSTESİ -->
-    <h3>Popüler Filmler</h3>
-    <div id="moviesGrid" class="movies-grid"></div>
+        <!-- VİDEO GÖSTERİCİ -->
+        <div class="video-wrapper">
+            <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
 
-    <!-- GİRİŞ / PROFİL MODALI -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="modalKapat('authModal')">&times;</span>
-            <div id="girisFormu">
-                <h3>Giriş Yap / Kayıt Ol</h3>
-                <input type="email" id="email" placeholder="E-posta" style="width:100%; margin-bottom:10px;"><br>
-                <input type="password" id="sifre" placeholder="Şifre" style="width:100%; margin-bottom:10px;"><br>
-                <button class="btn" style="width:100%;" onclick="kayitOl()">Kayıt Ol</button>
-                <button class="btn" style="width:100%; margin-top:5px; background:#333;" onclick="girisYap()">Giriş Yap</button>
-            </div>
-            <div id="profilBolumu" style="display:none;">
-                <h3>Profilim</h3>
-                <p id="kullaniciEmail"></p>
-                <label>Banner Görselin:</label>
-                <div id="bannerGosterge" class="banner-preview"></div>
-                <input type="file" id="bannerDosya" accept="image/*" style="width:100%; margin-bottom:10px;">
-                <button class="btn" style="width:100%;" onclick="bannerYukle()">Banner'ı Güncelle</button>
-                <button class="btn" style="width:100%; margin-top:10px; background:#444;" onclick="cikisYap()">Çıkış Yap</button>
-            </div>
+        <div class="info-text">
+            💡 Linki değiştirip "Güncelle"ye tıkla. Tarayıcı <span>kaydeder</span>, bir daha açtığında son eklediğin film gelir.
         </div>
     </div>
 
     <script>
-        // Ücretsiz TMDB API Anahtarı (Film verileri için)
-        const TMDB_API_KEY = 'c8182438d748f219a1651817c1825fa7'; // Örnek test anahtarı veya kendi TMDB anahtarın
+        // Varsayılan olarak senin verdiğin Doctor Strange linkini embed formatına çevirdim.
+        const DEFAULT_LINK = 'https://dzen.ru/embed/video/6676eac34d8a5017a7f36d43';
         
-        // Supabase Bilgilerin (Kendi Supabase bilgilerini buraya yazacaksın)
-        const SUPABASE_URL = 'SENIN_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'SENIN_SUPABASE_KEY';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const iframe = document.getElementById('videoFrame');
+        const input = document.getElementById('videoInput');
+        const statusMsg = document.getElementById('statusMsg');
 
-        // Sayfa açıldığında popüler filmleri getir ve oturumu kontrol et
-        window.onload = () => {
-            populerFilmleriGetir();
-            oturumKontrol();
-        };
+        // Sayfa yüklendiğinde kayıtlı linki getir, yoksa default'u göster.
+        function loadVideo() {
+            let savedLink = localStorage.getItem('myMovieLink');
+            
+            // Eğer kayıtlı link yoksa veya boşsa default'u ata.
+            if (!savedLink || savedLink.trim() === '') {
+                savedLink = DEFAULT_LINK;
+                localStorage.setItem('myMovieLink', savedLink);
+            }
 
-        async function populerFilmleriGetir() {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=8265bd1679663a7ea12ac168da84d2e8&language=tr-TR`);
-            const data = await res.json();
-            filmleriEkranaBas(data.results);
+            input.value = savedLink;
+            iframe.src = savedLink;
+            statusMsg.textContent = '✅ Yüklendi';
         }
 
-        async function filmAra() {
-            const query = document.getElementById('aramaInput').value;
-            if(!query) return populerFilmleriGetir();
-            const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=8265bd1679663a7ea12ac168da84d2e8&query=${query}&language=tr-TR`);
-            const data = await res.json();
-            filmleriEkranaBas(data.results);
+        // Kullanıcı linki güncellediğinde.
+        function updateVideo() {
+            let newLink = input.value.trim();
+            
+            if (newLink === '') {
+                statusMsg.textContent = '❌ Lütfen bir link girin!';
+                return;
+            }
+
+            // Basit bir kontrol: Eğer kullanıcı normal izleme linki verdiyse (watch/ içeriyorsa) embed'e çevirmeyi dene.
+            // Ama kullanıcı direkt embed linki de verebilir, ona karışmayalım.
+            if (newLink.includes('dzen.ru/video/watch/')) {
+                const videoId = newLink.split('/').pop().split('?')[0];
+                if (videoId && videoId.length > 5) {
+                    newLink = `https://dzen.ru/embed/video/${videoId}`;
+                    input.value = newLink; // Otomatik düzelt.
+                }
+            }
+
+            // Kaydet ve iframe'e yükle.
+            localStorage.setItem('myMovieLink', newLink);
+            iframe.src = newLink;
+            statusMsg.textContent = '✅ Link güncellendi!';
+            
+            // 2 saniye sonra status mesajını sadeleştir.
+            setTimeout(() => {
+                statusMsg.textContent = '✅ Yüklendi';
+            }, 2000);
         }
 
-        function filmleriEkranaBas(filmler) {
-            const grid = document.getElementById('moviesGrid');
-            grid.innerHTML = '';
-            filmler.forEach(film => {
-                const poster = film.poster_path ? `https://image.tmdb.org/t/p/w500${film.poster_path}` : 'https://via.placeholder.com/150';
-                grid.innerHTML += `
-                    <div class="movie-card">
-                        <img src="${poster}" alt="${film.title}">
-                        <div class="movie-title">${film.title}</div>
-                    </div>
-                `;
-            });
-        }
+        // Sayfa açılınca çalıştır.
+        loadVideo();
 
-        // Modal İşlemleri
-        function modalAc(id) { document.getElementById(id).style.display = 'flex'; }
-        function modalKapat(id) { document.getElementById(id).style.display = 'none'; }
-
-        // Supabase Auth & Profil İşlemleri
-        async function oturumKontrol() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) profilArayuzunuGoster(session.user);
-        }
-
-        async function kayitOl() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('sifre').value;
-            const { error } = await supabase.auth.signUp({ email, password });
-            if (error) alert(error.message); else alert('Kayıt başarılı! Giriş yapabilirsiniz.');
-        }
-
-        async function girisYap() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('sifre').value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) alert(error.message); else { profilArayuzunuGoster(data.user); modalKapat('authModal'); }
-        }
-
-        function profilArayuzunuGoster(user) {
-            document.getElementById('girisFormu').style.display = 'none';
-            document.getElementById('profilBolumu').style.display = 'block';
-            document.getElementById('kullaniciEmail').innerText = user.email;
-            document.getElementById('girisBtn').innerText = "Profilim";
-
-            const savedBanner = localStorage.getItem('banner_' + user.id);
-            if (savedBanner) document.getElementById('bannerGosterge').style.backgroundImage = `url('${savedBanner}')`;
-        }
-
-        async function bannerYukle() {
-            const fileInput = document.getElementById('bannerDosya');
-            if (fileInput.files.length === 0) return alert('Dosya seçin!');
-            const file = fileInput.files[0];
-            const user = (await supabase.auth.getUser()).data.user;
-            const fileName = `banner_${user.id}_${Date.now()}`;
-
-            const { error } = await supabase.storage.from('banners').upload(fileName, file);
-            if (error) return alert(error.message);
-
-            const { data } = supabase.storage.from('banners').getPublicUrl(fileName);
-            document.getElementById('bannerGosterge').style.backgroundImage = `url('${data.publicUrl}')`;
-            localStorage.setItem('banner_' + user.id, data.publicUrl);
-            alert('Banner güncellendi!');
-        }
-
-        async function cikisYap() {
-            await supabase.auth.signOut();
-            location.reload();
-        }
+        // Enter tuşuna basınca da güncellemesi için.
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                updateVideo();
+            }
+        });
     </script>
 </body>
 </html>
